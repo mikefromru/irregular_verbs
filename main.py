@@ -1,7 +1,7 @@
 from kivymd.app import MDApp
 from kivy.app import App
-import plyer
-import json
+from plyer import tts
+import json, os
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import NumericProperty
@@ -14,6 +14,7 @@ from kivy.core.window import Window
 from kivy.metrics import dp
 
 from kivy.utils import escape_markup
+from kivy.core.audio import SoundLoader
 
 from kivy.uix.label import Label
 from kivy.uix.button import Button
@@ -21,7 +22,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.datatables import MDDataTable
 from kivy.uix.widget import Widget
-from kivymd.uix.button import MDRoundFlatButton, MDRaisedButton
+from kivymd.uix.button import MDRoundFlatButton, MDRaisedButton, MDRoundFlatIconButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.snackbar import Snackbar
@@ -42,6 +43,9 @@ from kivy.uix.screenmanager import (
 
 import random
 import sys
+
+from gtts import gTTS
+from playsound import playsound 
 
 from kivy.core.window import Window
 from kivy.utils import rgba
@@ -114,6 +118,8 @@ class TableScreen(Screen):
         self.manager.current = 'menu_screen'
 
 class IndexScreen(Screen):
+
+    shx = .5
 
     red_line = NumericProperty(0)
     height_line = NumericProperty(0)
@@ -194,6 +200,7 @@ class IndexScreen(Screen):
             self.red_line = 0
 
             self.remove_widget(self.btn)
+            self.remove_widget(self.say_btn)
             self.ids.button_.opacity = 0
             self.ids.button_.disabled = True
             self.ids.buttons_.opacity = 1
@@ -244,7 +251,7 @@ class IndexScreen(Screen):
             self.ids.verbs.text = lb + ' ' + instance.strip()
 
             user_anser = self.ids.verbs.text.split()
-            right_answer = self.data[self.key_verb]
+            self.right_answer = self.data[self.key_verb]
             user_words_len = len(self.ids.verbs.text)
 
             self.number_answer += 1
@@ -256,8 +263,8 @@ class IndexScreen(Screen):
                 my_font_size = '25sp'
                 self.height_line = user_words_len * 16
 
-            if user_anser == right_answer: # right answer
- 
+            if user_anser == self.right_answer: # right answer
+                
                 ru_verb = self.key_verb.partition(',')[0]
                 self.ids.button_.opacity = 0
                 self.ids.button_.disabled = True
@@ -267,10 +274,12 @@ class IndexScreen(Screen):
 
             else:
                 # wrong answer
+                user_text = ' '.join(user_anser)
+                bot_text = ' '.join(self.right_answer)
+
+
                 self.red_line = 1
                 self.mistake += 1
-                user_text = ' '.join(user_anser)
-                bot_text = ' '.join(right_answer)
                 ru_verb = self.key_verb.partition(',')[0]
                 self.ids.verbs.text = f'[color=E30B5C][size={my_font_size}]{user_text}[/size][/color]\n[size=16sp]{bot_text}[/size]'
 
@@ -280,19 +289,48 @@ class IndexScreen(Screen):
                 self.ids.button_.disabled = True
                 self.ids.buttons_.opacity = 0
 
+            self.say_btn = MDRoundFlatIconButton(
+                text='Прослушать', 
+                icon='volume-high',
+                text_color=rgba('#DCDCDC'),
+                #text_color=rgba('#ffffff'),
+                font_style='Overline',
+                theme_icon_color='Custom',
+                icon_color=rgba('#DCDCDC'),
+                line_color=rgba('#DCDCDC'),
+                pos_hint={'center_x': .5, 'center_y': .35},
+                font_name='fonts/roboto-mono/roboto-mono-medium.ttf'
+            )
+            self.say_btn.bind(on_press=self.say)
+            self.add_widget(self.say_btn)
 
             self.btn = MDRoundFlatButton(
                 text='Дальше', 
                 text_color=rgba(color_text),
                 md_bg_color=rgba('#ffffff'),
-                pos_hint={'center_x': .5, 'center_y': .4},
+                pos_hint={'center_x': .5, 'center_y': .45},
                 font_name='fonts/roboto-mono/roboto-mono-medium.ttf'
             )
             self.btn.bind(on_press=self.next)
             self.add_widget(self.btn)
-
         else:
             pass
+
+    def say(self, instance):
+        mytext = ' '.join(self.right_answer)
+        name = self.right_answer[0] + '.ogg'
+
+        if platform != 'android':
+            try:
+                playsound('sounds/' + name)
+            except:
+                print('Not found')
+        else:
+            try:
+                sound = SoundLoader.load('sounds/' + name)
+                sound.play()
+            except:
+                print('something went wrong')
 
     def foo(self, *args):
         print('I am a Snackbar')
@@ -313,7 +351,7 @@ class IndexScreen(Screen):
         self.mistake = 0
 
         self.verbs_list = list(self.data.keys())
-        self.verbs_list = self.verbs_list[0:6]
+        self.verbs_list = self.verbs_list#[0:6]
         random.shuffle(self.verbs_list)
         self.key_verb = self.verbs_list[0]
 

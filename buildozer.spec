@@ -7,29 +7,30 @@ title = Irregular verbs
 package.name = irregular_verbs
 
 # (str) Package domain (needed for android/ios packaging)
+#package.domain = org.irregular_verbs
 package.domain = org.test
 
 # (str) Source code where the main.py live
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,json,ttf
+source.include_exts = py,png,jpg,kv,atlas,json,ttf,ogg,wav
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
 
 # (list) Source files to exclude (let empty to not exclude anything)
-#source.exclude_exts = spec
+source.exclude_exts = spec, politica.html, .gitignore
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-#source.exclude_dirs = tests, bin, venv
+source.exclude_dirs = tests, bin, venv, .git, __pycache__, backup
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.1
+version = 0.3
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -37,7 +38,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,kivymd,plyer,pillow,requests,thread6,urllib3,idna,sdl2_ttf==2.0.15,pillow,sdl2,openssl,gTTS,pygments,certifi,charset_normalizer
+requirements = python3,kivy,kivymd,plyer,pillow,requests,pygments,openssl,thread6,urllib3,idna,sdl2_ttf==2.0.15,pillow,sdl2,openssl,gTTS,pygments,certifi,chardet,charset_normalizer,gTTS
 
 
 # (str) Custom source folders for requirements
@@ -96,22 +97,22 @@ android.presplash_color = #FFFFFF
 #icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
-#android.permissions = INTERNET
+android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-#android.api = 27
+android.api = 31
 
 # (int) Minimum API your APK / AAB will support.
-#android.minapi = 21
+android.minapi = 21
 
 # (int) Android SDK version to use
-#android.sdk = 20
+android.sdk = 20
 
 # (str) Android NDK version to use
-#android.ndk = 23b
+android.ndk = 23b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 #android.ndk_api = 21
@@ -287,10 +288,10 @@ android.allow_backup = True
 # android.no-compile-pyo = True
 
 # (str) The format used to package the app for release mode (aab or apk or aar).
-# android.release_artifact = aab
+android.release_artifact = aab
 
 # (str) The format used to package the app for debug mode (apk or aar).
-# android.debug_artifact = apk
+android.debug_artifact = apk
 
 #
 # Python for android (p4a) specific
