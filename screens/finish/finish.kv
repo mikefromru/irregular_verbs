@@ -1,0 +1,72 @@
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import SwapTransition kivy.uix.screenmanager.SwapTransition
+<FinishScreen>
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        canvas.before:
+            Color:
+                rgba: rgba('#ffffff')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(80)
+            orientation: 'vertical'
+
+            MDLabel:
+                text: 'Тест завершен'
+                font_name: 'fonts/OpenSans/OpenSans-Medium.ttf'
+                halign: 'center'
+                font_size: '14sp'
+                theme_text_color: 'Secondary'
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            spacing: dp(80)
+            padding: [dp(0), dp(10), dp(0), dp(60)]
+
+            MDIconButton:
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                icon: 'check-circle-outline'
+                theme_icon_color: 'Custom'
+                icon_color: app.theme_cls.primary_color
+                icon_size: dp(100)
+
+            MDLabel:
+                id: level_name
+                font_name: 'fonts/OpenSans/OpenSans-Bold.ttf'
+                halign: 'center'
+                font_size: '19sp'
+
+            MDLabel:
+                id: finish
+                halign: 'center'
+                font_name: 'fonts/OpenSans/OpenSans-Medium.ttf'
+                font_size: '19sp'
+                padding_x: dp(20)
+
+            MDFillRoundFlatButton:
+                text: 'Вернуться назад'
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                font_name: 'fonts/OpenSans/OpenSans-SemiBold.ttf'
+                font_size: '18sp'
+                on_release: 
+                    root.manager.current = 'menu_screen'
+
+            Widget:
+
+        MDRectangleFlatIconButton:
+            icon: 'i/gneppa_icon.png'
+            line_color: 0,0,0,0
+            ripple_off: True
+            text: 'Gneppa.com - практика разговорного английского'
+            text_color: rgba('#000000')
+            font_name: 'fonts/OpenSans/OpenSans-Medium.ttf'
+            font_size: '10sp'
+            pos_hint: {'center_x': .5, 'center_y': .1}
+            on_release: root.get_gneppa()

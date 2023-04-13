@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = Irregular verbs
+title = Неправильные глаголы
 
 # (str) Package name
 package.name = irregular_verbs
@@ -23,14 +23,14 @@ source.include_exts = py,png,jpg,kv,atlas,json,ttf,ogg,wav
 source.exclude_exts = spec, politica.html, .gitignore
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = tests, bin, venv, .git, __pycache__, backup
+source.exclude_dirs = tests, bin, .venv, .git, __pycache__, backup, .dev_python3.10
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.3
+version = 1.1
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -38,7 +38,12 @@ version = 0.3
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,kivymd,plyer,pillow,requests,pygments,openssl,thread6,urllib3,idna,sdl2_ttf==2.0.15,pillow,sdl2,openssl,gTTS,pygments,certifi,chardet,charset_normalizer,gTTS
+#requirements = python3==3.11.1,hostpython3==3.11.1,kivy,kivymd,plyer,pillow,requests,pygments,openssl,thread6,urllib3,idna,sdl2_ttf==2.0.15,pillow,sdl2,openssl,gTTS,pygments,certifi,chardet,charset_normalizer,gTTS
+
+
+#requirements = python3,kivy,kivymd,plyer,pillow,requests,pygments,playsound,openssl,thread6,urllib3,idna,sdl2_ttf,pillow,sdl2,openssl,gTTS,pygments,certifi,chardet,charset_normalizer,gTTS
+
+requirements = python3,kivy==master,https://github.com/kivymd/KivyMD/archive/master.zip,plyer,pillow,requests,pygments,playsound,openssl,thread6,urllib3,idna,sdl2_ttf,pillow,sdl2,openssl,gTTS,pygments,certifi,chardet,charset_normalizer,gTTS
 
 
 # (str) Custom source folders for requirements
@@ -84,7 +89,7 @@ fullscreen = 0
 # red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
 # darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy,
 # olive, purple, silver, teal.
-android.presplash_color = #FFFFFF
+android.presplash_color = #00CC80
 
 # (string) Presplash animation using Lottie format.
 # see https://lottiefiles.com/ for examples and https://airbnb.design/lottie/
@@ -112,7 +117,7 @@ android.minapi = 21
 android.sdk = 20
 
 # (str) Android NDK version to use
-android.ndk = 23b
+android.ndk = 25b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 #android.ndk_api = 21
@@ -288,7 +293,8 @@ android.allow_backup = True
 # android.no-compile-pyo = True
 
 # (str) The format used to package the app for release mode (aab or apk or aar).
-android.release_artifact = aab
+#android.release_artifact = aab
+android.release_artifact = apk
 
 # (str) The format used to package the app for debug mode (apk or aar).
 android.debug_artifact = apk
@@ -304,7 +310,8 @@ android.debug_artifact = apk
 #p4a.fork = kivy
 
 # (str) python-for-android branch to use, defaults to master
-#p4a.branch = master
+p4a.branch = master
+#p4a.branch = develop
 
 # (str) python-for-android specific commit to use, defaults to HEAD, must be within p4a.branch
 #p4a.commit = HEAD

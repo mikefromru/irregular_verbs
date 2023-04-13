@@ -1,34 +1,16 @@
 from kivymd.app import MDApp
-from kivy.app import App
-from plyer import tts
-import json, os
-from kivy.clock import Clock
+import kivy
 from kivy.lang import Builder
-from kivy.properties import NumericProperty
 
 from kivy.animation import Animation
-
 from kivy.utils import platform
+import platform as pl
+
+from kivy.core.text import LabelBase
 from kivy.core.window import Window
 
-from kivy.metrics import dp
+from kivy.clock import Clock
 
-from kivy.utils import escape_markup
-from kivy.core.audio import SoundLoader
-
-from kivy.uix.label import Label
-from kivy.uix.button import Button
-from kivy.uix.gridlayout import GridLayout
-from kivymd.uix.screen import MDScreen
-from kivymd.uix.datatables import MDDataTable
-from kivy.uix.widget import Widget
-from kivymd.uix.button import MDRoundFlatButton, MDRaisedButton, MDRoundFlatIconButton
-from kivymd.uix.label import MDLabel
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.snackbar import Snackbar
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.button import MDFlatButton
-from kivy.uix.scrollview import ScrollView
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.screenmanager import (
     NoTransition,
@@ -41,347 +23,88 @@ from kivy.uix.screenmanager import (
     RiseInTransition
 )
 
-import random
 import sys
-
-from gtts import gTTS
-from playsound import playsound 
-
 from kivy.core.window import Window
-from kivy.utils import rgba
+from kivy.core.clipboard import Clipboard
 
-from tools.tools import get_number
+# mine Screens
+from screens.levels.levels import LevelsScreen
+from screens.table.table import TableScreen
+from screens.finish.finish import FinishScreen
+from screens.faq.faq import FaqScreen
+
+__version__ = '1.1'
 
 if platform != 'android':
-    Window.size = (350, 750)
-    Window.top = 70
-    Window.right = 70
+    if kivy.__version__ == '2.1.0':
+        Window.size = (350, 750)
+        Window.top = 70
+        Window.right = 70
 
 class MenuScreen(Screen):
-    
+
+    #from jnius import autoclass
+    def share(self):
+        title = 'Title'
+        appgallery = 'https://appgallery.huawei.com/app/C107717287'
+        google_play = 'https://play.google.com/store/apps/details?id=org.irregular_verbs.irregular_verbs'
+        text = f"AppGallery:  {appgallery} \n\n Google Play: {google_play}"
+        if platform == 'android':
+            from jnius import autoclass
+            PythonActivity = autoclass('org.kivy.android.PythonActivity')
+            Intent = autoclass('android.content.Intent')
+            String = autoclass('java.lang.String')
+            intent = Intent()
+            intent.setAction(Intent.ACTION_SEND)
+            intent.putExtra(Intent.EXTRA_TEXT, String('{}'.format(text)))
+            intent.setType('text/plain')
+            chooser = Intent.createChooser(intent, String(title))
+            PythonActivity.mActivity.startActivity(chooser)
+        else:
+            Clipboard.copy(text)
+
     def close_app(self):
         sys.exit()
 
-class FinishScreen(Screen):
- 
-    mistake_ = NumericProperty(0)
-
-    def __init__(self, **kwargs):
-        super(FinishScreen, self).__init__(**kwargs)
-
-    def on_enter(self, *args):
-        self.ids.finish.text = get_number(self.mistake_)
-        IndexScreen.number_answer = 1
-
-class TableScreen(Screen):
-    def my_table(self, *args):
-
-        with open('verbs.json', 'r') as f:
-            self.data = json.load(f)
-
-        gl = GridLayout(cols=3, padding=dp(20), spacing=dp(20), size_hint=(1, None))
-        gl.bind(minimum_height=gl.setter('height'))
-        gl.add_widget(MDLabel(text='Infinitive', bold=True, halign='center'))
-        gl.add_widget(MDLabel(text='Past Simple', bold=True, halign='center'))
-        gl.add_widget(MDLabel(text='Participle II', bold=True, halign='center'))
-
-        for x in self.data:
-            key_ru = f'[size=10sp][i]{x}[/i][/size]'
-            zero = '[size=18sp]{}[/size]'.format(self.data[x][0])
-            first = '[size=18sp]{}[/size]'.format(self.data[x][1])
-            second = '[size=18sp]{}[/size]'.format(self.data[x][2])
-            gl.add_widget(MDLabel(text='\n' + zero + '\n' + key_ru, size_hint_y=None, halign='center', height=dp(40), markup=True))
-            gl.add_widget(MDLabel(text=first.replace(' ', ''), size_hint_y=None, halign='center', height=dp(40), markup=True))
-            gl.add_widget(MDLabel(text=second.replace(' ', ''), size_hint_y=None, halign='center', height=dp(40), markup=True))
-        self.sc = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))
-        self.sc.add_widget(gl)
-        self.add_widget(self.sc)
-
-        self.btn = MDRaisedButton(text='Закрыть', pos_hint={'center_x': 0.5})
-        self.btn.bind(on_press=self.callback)
-        self.add_widget(self.btn)
-
-    def check_j(self, i):
-        self.remove_widget(self.loading)
-        self.my_table()
-    
-    def on_enter(self, *args):
-        self.loading = MDLabel(text='Loading ...', halign='center')
-        self.add_widget(self.loading)
-        Clock.schedule_once(self.check_j, 0.5)
-
-    def on_leave(self, *args):
-        self.remove_widget(self.sc)
-        self.remove_widget(self.btn)
-
-    def callback(self, instance):
-        self.manager.current = 'menu_screen'
-
-class IndexScreen(Screen):
-
-    shx = .5
-
-    red_line = NumericProperty(0)
-    height_line = NumericProperty(0)
-    
-    dialog_table_verbs = None
-    dialog = None
-    number_answer = NumericProperty(1)
-    mistake = NumericProperty(0)
-
-    def __init__(self, **kwargs):
-        super(IndexScreen, self).__init__(**kwargs)
-
-    def get_buttons(self):
-        btns = self.data.get(self.key_verb)
-        btns = list(set(btns))
-
-        s = []
-        for x in self.data.values():
-            for j in x:
-                s.append(j)
-
-        random.shuffle(s)
-
-        for x in btns:
-            s.remove(x)
-
-        if len(btns) == 1: amount = 5
-        if len(btns) == 2: amount = 4
-        if len(btns) == 3: amount = 3
-
-        random_ = random.sample(s, amount) + btns
-        random.shuffle(random_)
-        return random_
-    
-    def remove(self):
-        anim = Animation(opacity=0, duration=0.3)
-
-        lb = self.ids.verbs.text.split()
-
-        try:
-            lb.pop()
-        except:
-            pass
-
-        if len(lb) == 0:
-            anim.start(self.ids.button_)
-        else:
-            pass
-
-        self.ids.verbs.text = ''.join(lb)
-        self.move_backspace() # move backspace icon
-
-    def move_backspace(self):
-        self.ids.verbs.font_size = '25sp'
-        len_user_words = len(self.ids.verbs.text)
-        if len_user_words < 5:
-            var = .69
-        elif len_user_words >= 5 and len_user_words < 8:
-            var = .75
-        elif len_user_words >= 8 and len_user_words < 10:
-            var = .8
-        elif len_user_words >= 10 and len_user_words < 12:
-            var = .85
-        elif len_user_words >=12 and len_user_words <= 15:
-            self.ids.verbs.font_size = '22sp'
-            var = .9
-        elif len_user_words > 20:
-            self.ids.verbs.font_size = '18sp'
-            var = .9
-        else:
-            var = .95
-        self.ids.button_.pos_hint = {'center_x': var, 'center_y': 0.5}
-
-    def next(self, *args):
-        try:
-            print(f'{self.mistake=}')
-                
-            self.red_line = 0
-
-            self.remove_widget(self.btn)
-            self.remove_widget(self.say_btn)
-            self.ids.button_.opacity = 0
-            self.ids.button_.disabled = True
-            self.ids.buttons_.opacity = 1
-
-            self.key_verb = self.verbs_list[0]
-            self.ids.ru_verb.text = self.key_verb.capitalize()
-
-            list_buttons = self.get_buttons() # shuffle list for buttons
-            self.number_answer += 0        
-            self.ids.hublet.text = f'{self.number_answer}/{len(self.data)}'
-            self.ids.verbs.text = ''
-
-            self.ids.button1.text = list_buttons[0]
-            self.ids.button2.text = list_buttons[1]
-            self.ids.button3.text = list_buttons[2]
-            self.ids.button4.text = list_buttons[3]
-            self.ids.button5.text = list_buttons[4]
-            self.ids.button6.text = list_buttons[5]
-
-            self.verbs_list.pop(0)
-            self.var = .5
-
-        except IndexError as er:
-            print(self.mistake)
-            FinishScreen.mistake_ = self.mistake
-            self.manager.current = 'finish_screen'
-
-    def callback(self, instance):
-        anim = Animation(opacity=1, duration=0.1)
-        anim_icon_button = Animation(opacity=1, duration=0.2)
-        anim1 = Animation(opacity=0, duration=0.3)
-        #instance = 'understand'
-        self.ids.button_.disabled = False
-        var = .50
-        len_split_lb = len(self.ids.verbs.text.split())
-        lb = self.ids.verbs.text.strip()
-
-        if len_split_lb < 2:
-            self.ids.verbs.text = lb + ' ' + instance.strip()
-
-            anim.start(self.ids.verbs)
-            anim_icon_button.start(self.ids.button_)
-
-            self.move_backspace() # move backspace icon
-
-        elif len_split_lb == 2:
-            print(len_split_lb, ' <<<<<')
-            self.ids.verbs.text = lb + ' ' + instance.strip()
-
-            user_anser = self.ids.verbs.text.split()
-            self.right_answer = self.data[self.key_verb]
-            user_words_len = len(self.ids.verbs.text)
-
-            self.number_answer += 1
-
-            if user_words_len > 20:
-                my_font_size = '16sp'
-                self.height_line = user_words_len * 10
-            else:
-                my_font_size = '25sp'
-                self.height_line = user_words_len * 16
-
-            if user_anser == self.right_answer: # right answer
-                
-                ru_verb = self.key_verb.partition(',')[0]
-                self.ids.button_.opacity = 0
-                self.ids.button_.disabled = True
-
-                self.ids.buttons_.opacity = 0
-                color_text = '#28C38A'
-
-            else:
-                # wrong answer
-                user_text = ' '.join(user_anser)
-                bot_text = ' '.join(self.right_answer)
-
-
-                self.red_line = 1
-                self.mistake += 1
-                ru_verb = self.key_verb.partition(',')[0]
-                self.ids.verbs.text = f'[color=E30B5C][size={my_font_size}]{user_text}[/size][/color]\n[size=16sp]{bot_text}[/size]'
-
-                color_text = '#ff0000'
-
-                self.ids.button_.opacity = 0
-                self.ids.button_.disabled = True
-                self.ids.buttons_.opacity = 0
-
-            self.say_btn = MDRoundFlatIconButton(
-                text='Прослушать', 
-                icon='volume-high',
-                text_color=rgba('#DCDCDC'),
-                #text_color=rgba('#ffffff'),
-                font_style='Overline',
-                theme_icon_color='Custom',
-                icon_color=rgba('#DCDCDC'),
-                line_color=rgba('#DCDCDC'),
-                pos_hint={'center_x': .5, 'center_y': .35},
-                font_name='fonts/roboto-mono/roboto-mono-medium.ttf'
-            )
-            self.say_btn.bind(on_press=self.say)
-            self.add_widget(self.say_btn)
-
-            self.btn = MDRoundFlatButton(
-                text='Дальше', 
-                text_color=rgba(color_text),
-                md_bg_color=rgba('#ffffff'),
-                pos_hint={'center_x': .5, 'center_y': .45},
-                font_name='fonts/roboto-mono/roboto-mono-medium.ttf'
-            )
-            self.btn.bind(on_press=self.next)
-            self.add_widget(self.btn)
-        else:
-            pass
-
-    def say(self, instance):
-        mytext = ' '.join(self.right_answer)
-        name = self.right_answer[0] + '.ogg'
-
-        if platform != 'android':
-            try:
-                playsound('sounds/' + name)
-            except:
-                print('Not found')
-        else:
-            try:
-                sound = SoundLoader.load('sounds/' + name)
-                sound.play()
-            except:
-                print('something went wrong')
-
-    def foo(self, *args):
-        print('I am a Snackbar')
-
-    def close_app(self, *args):
-        sys.exit()
-
-    def on_enter(self, *args):
-        with open('verbs.json', 'r') as f:
-            self.data = json.load(f)
-
-            self.key_verb = ''
-        
-        self.number_answer = 1
-        self.ids.hublet.text = f'{self.number_answer}/{len(self.data)}'
-        self.ids.button_.opacity = 0
-        self.ids.verbs.text = ''
-        self.mistake = 0
-
-        self.verbs_list = list(self.data.keys())
-        self.verbs_list = self.verbs_list#[0:6]
-        random.shuffle(self.verbs_list)
-        self.key_verb = self.verbs_list[0]
-
-        self.ids.ru_verb.text = self.key_verb.capitalize()
-
-        list_buttons = self.get_buttons() # shuffle list for buttons
-
-        self.ids.button1.text = list_buttons[0]
-        self.ids.button2.text = list_buttons[1]
-        self.ids.button3.text = list_buttons[2]
-        self.ids.button4.text = list_buttons[3]
-        self.ids.button5.text = list_buttons[4]
-        self.ids.button6.text = list_buttons[5]
-
-        self.verbs_list.pop(0)
-
-class WindowManager(ScreenManager):
-    pass
-
 class MainApp(MDApp):
 
+    app_version = __version__
+
+    def on_key(self, window, key, *args):
+        if key == 27:  # the esc key
+            if self.sm.current == 'menu_screen':
+                return False
+            else:
+                self.sm.transition = FadeTransition(duration=.1)
+                self.sm.current = "menu_screen"
+            return True
+
     def build(self):
-        root = Builder.load_file('index.kv')
+        Builder.load_file('main.kv')
+        Builder.load_file('screens/table/table.kv')
+        Builder.load_file('screens/levels/levels.kv')
+        Builder.load_file('screens/faq/faq.kv')
 
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Green"
         self.theme_cls.primary_hue = "A700"
-        self.window_manager = WindowManager(transition=NoTransition())
+        Window.bind(on_keyboard=self.on_key)
 
-        return self.window_manager
+        self.sm = ScreenManager()
+        self.sm = ScreenManager(transition=FadeTransition(duration=.1))
+
+        # Create some screens 
+        self.sm.add_widget(MenuScreen(name='menu_screen'))
+        self.sm.add_widget(LevelsScreen(name='levels_screen'))
+        self.sm.add_widget(TableScreen(name='table_screen'))
+        self.sm.add_widget(FaqScreen(name='faq_screen'))
+        return self.sm
     
 if __name__ == '__main__':
+    LabelBase.register(name='OpenSans',
+        fn_regular='fonts/OpenSans/OpenSans-Regular.ttf',
+        fn_italic='fonts/OpenSans/OpenSans-Italic.ttf',
+        fn_bold='fonts/OpenSans/OpenSans-Bold.ttf',
+        fn_bolditalic='fonts/OpenSans/OpenSans-BoldItalic.ttf',
+    )
     MainApp().run()

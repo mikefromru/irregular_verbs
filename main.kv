@@ -1,0 +1,111 @@
+#:import Clipboard kivy.core.clipboard.Clipboard
+#:import CardTransition kivy.uix.screenmanager.CardTransition
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+
+<MenuScreen>
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'i/pics/background.png'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        adaptive_size: True
+        spacing: "20dp"
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        MDBoxLayout:
+            padding: [0,0,0,dp(80)]
+
+            MDLabel:
+                text: 'Неправильные \nглаголы'
+                font_name: 'fonts/OpenSans/OpenSans-Bold.ttf'
+                font_size: '21sp'
+                markup: True
+
+        MDCard:
+            orientation: 'vertical'
+            size_hint: None, None
+            size: '200dp', '60dp'
+            md_bg_color: rgba('#B9F6CA')
+            radius: dp(15)
+            on_release:
+                root.manager.current = 'levels_screen'
+                    
+            MDRelativeLayout:
+
+                MDIcon: 
+                    padding_x: dp(15)
+                    icon: 'cards'
+                    theme_text_color: "Custom"
+                    text_color: rgba('#00C853')
+                    font_size: '35sp'
+                    pos_hint: {'center_y': 0.5}
+            
+                MDLabel: 
+                    text: 'Начать'
+                    halign: 'center'
+                    font: 'OpenSans'
+                    font_size: '17sp'
+                    bold: True
+
+        MDCard:
+            orientation: 'vertical'
+            size_hint: None, None
+            size: '200dp', '60dp'
+            md_bg_color: rgba('#B9F6CA')
+            radius: dp(15)
+            on_release:
+                root.manager.current = 'table_screen'
+                    
+            MDRelativeLayout:
+
+                MDIcon: 
+                    padding_x: dp(15)
+                    icon: 'table'
+                    theme_text_color: "Custom"
+                    text_color: rgba('#00C853')
+                    font_size: '35sp'
+                    pos_hint: {'center_y': 0.5}
+                       
+                MDLabel: 
+                    text: 'Таблица'
+                    halign: 'center'
+                    font: 'OpenSans'
+                    font_size: '17sp'
+                    bold: True
+
+        MDCard:
+            orientation: 'vertical'
+            size_hint: None, None
+            size: '200dp', '60dp'
+            elevation:  dp(1)
+            shadow_color: rgba('#B9F6CA')
+            shadow_softness: dp(1)
+            shadow_offset: dp(0), dp(-5)
+            radius: dp(15)
+            on_release:
+                root.manager.current = 'faq_screen'
+                    
+            MDRelativeLayout:
+
+                MDLabel: 
+                    text: 'О приложении'
+                    halign: 'center'
+                    font_name: 'OpenSans'
+                    font_size: '17sp'
+                    bold: True
+
+    # ########## footer #############
+    MDBoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: 1
+         
+    MDIconButton:
+        icon: 'share-variant-outline'
+        theme_icon_color: "Custom"
+        icon_size: '50sp'
+        icon_color: rgba('#B9F6CA')
+        on_release: root.share()
+        pos_hint: {'center_x': 0.5}

@@ -1,0 +1,101 @@
+#:import GameScreen screens.game.game.GameScreen
+
+<LevelsScreen>
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'i/pics/background.png'
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        adaptive_size: True
+        spacing: '10dp'
+        pos_hint: {'center_x': .5, 'center_y': .5}
+
+        MDLabel:
+            text: 'Выберите категорию'
+            font_name: 'OpenSans'
+            font_size: '14sp'
+
+        MDCard:
+            padding: [4, 0,0,0]
+            size_hint: None, None
+            size: "250dp", "70dp"
+            on_release:
+                GameScreen.level = 'beginner'
+                root.manager.current = 'game_screen'
+
+            MDIcon:
+                icon: 'cube'
+                theme_text_color: "Custom"
+                text_color: rgba('#B9F6CA')
+                font_size: dp(35)
+                pos_hint: {'center_y': .5}
+
+
+            MDLabel:
+                padding_x: 10
+                text: 'Beginner'
+                font_size: '17sp'
+                font_name: 'OpenSans'
+                bold: True
+
+            MDIcon:
+                icon: 'chevron-right'
+                theme_text_color: "Hint"
+                pos_hint: {'center_y': .5}
+
+        MDCard:
+            padding: 4
+            size_hint: None, None
+            size: "250dp", "70dp"
+            on_release:
+                GameScreen.level = 'intermediate'
+                root.manager.current = 'game_screen'
+
+            MDIcon:
+                icon: 'cube'
+                theme_text_color: "Custom"
+                text_color: rgba('#44CC80')
+                font_size: dp(35)
+                pos_hint: {'center_y': .5}
+
+            MDLabel:
+                padding_x: 10
+                text: 'Intermediate'
+                font_size: '17sp'
+                font_name: 'OpenSans'
+                bold: True
+
+            MDIcon:
+                icon: 'chevron-right'
+                theme_text_color: "Hint"
+                pos_hint: {'center_y': .5}
+         
+        MDCard:
+            padding: 4
+            size_hint: None, None
+            size: "250dp", "70dp"
+            on_release:
+                GameScreen.level = 'advanced'
+                root.manager.current = 'game_screen'
+
+            MDIcon:
+                icon: 'cube'
+                theme_text_color: "Custom"
+                text_color: rgba('#28C38A')
+                font_size: dp(35)
+                pos_hint: {'center_y': .5}
+
+            MDLabel:
+                padding_x: 10
+                text: 'Advanced'
+                font_size: '17sp'
+                font_name: 'OpenSans'
+                bold: True
+
+            MDIcon:
+                icon: 'chevron-right'
+                theme_text_color: "Hint"
+                pos_hint: {'center_y': .5}

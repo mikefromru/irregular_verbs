@@ -1,0 +1,135 @@
+<MyContainer>:
+    orientation: 'vertical'
+
+    MDBoxLayout:
+        padding: '5sp'
+        orientation: 'horizontal'
+        padding: [dp(0),dp(0),dp(20),dp(0)]
+
+        MDIconButton:
+            pos_hint: {'center_y': 0.5}
+            icon: 'volume-low'
+            theme_icon_color: "Hint"
+            ripple_scale: 0
+            icon_size: dp(22)
+            on_release: root.volume(txt)
+
+        MDLabel:
+            id: txt
+            text: root.text
+            font_name: 'fonts/OpenSans/OpenSans-SemiBold.ttf'
+            halign: 'left'
+        
+        MDLabel:
+            text: root.past
+            font_name: 'OpenSans'
+            font_name: 'fonts/OpenSans/OpenSans-SemiBold.ttf'
+            halign: 'left'
+
+        MDLabel:
+            text: root.finished
+            font_name: 'OpenSans'
+            font_name: 'fonts/OpenSans/OpenSans-SemiBold.ttf'
+            halign: 'left'
+
+    MDBoxLayout:
+        padding: [dp(45),dp(0),dp(0),dp(20)]
+
+        MDLabel:
+            text: root.secondary_text
+            font_name: 'OpenSans'
+            theme_text_color: 'Secondary'
+            font_size: dp(14) 
+            halign: 'left'
+            italic: True
+
+<TableScreen>
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        pos_hint: {'top': 1}
+        canvas.before:
+            Color:
+                rgba: rgba('#ffffff')#rgba('#44CC80')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        MDBoxLayout:
+            md_bg_color: rgba('#B9F6CA') #app.theme_cls.primary_color
+            orientation: 'horizontal'
+            adaptive_height: True
+            height: dp(70)
+            cols: 3
+
+            MDIconButton:
+                icon: 'arrow-left'
+                icon_size: '25sp'
+                pos_hint: {'center_y': 0.5}
+                on_release: 
+                    app.sm.current = 'menu_screen'
+
+            MDLabel:
+                text: 'Таблица'
+                font_name: 'OpenSans'
+                halign: 'center'
+                bold: True
+
+            MDIconButton:
+                icon: '' #'magnify'
+                icon_size: '35sp'
+                pos_hint: {'center_y': 0.5}
+                ripple_scale: 0
+
+        MDTabs:
+            size_hint_y: 1
+            background_color: rgba('#B9F6CA')
+            tab_padding: [0, 0, 0, 0]
+            indicator_color:  'black'
+            font_name: 'fonts/OpenSans/OpenSans-Bold.ttf'
+
+            Tab:
+                title: 'Beginner'
+                halign: 'right'
+
+                RecycleView:
+                    id: beginner_rv
+                    viewclass: 'MyContainer'
+                    effect_cls: 'ScrollEffect'
+
+                    RecycleBoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        default_size_hint: 1, None
+                        height: self.minimum_height
+                        default_size: None, dp(60)
+
+            Tab:
+                title: 'Intermediate'
+
+                RecycleView:
+                    id: intermediate_rv
+                    viewclass: 'MyContainer'
+                    effect_cls: 'ScrollEffect'
+
+                    RecycleBoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        default_size_hint: 1, None
+                        height: self.minimum_height
+                        default_size: None, dp(60)
+
+            Tab:
+                title: 'Advanced'
+
+                RecycleView:
+                    id: advanced_rv
+                    viewclass: 'MyContainer'
+                    effect_cls: 'ScrollEffect'
+
+                    RecycleBoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        default_size_hint: 1, None
+                        height: self.minimum_height
+                        default_size: None, dp(60)
