@@ -33,13 +33,13 @@ from screens.table.table import TableScreen
 from screens.finish.finish import FinishScreen
 from screens.faq.faq import FaqScreen
 
-__version__ = '1.1'
+__version__ = '1.2'
 
 if platform != 'android':
-    if kivy.__version__ == '2.1.0':
-        Window.size = (350, 750)
-        Window.top = 70
-        Window.right = 70
+    Window.size = (350, 750)
+    Window.top = 70
+    Window.right = 70
+
 
 class MenuScreen(Screen):
 
@@ -87,7 +87,7 @@ class MainApp(MDApp):
 
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Green"
-        self.theme_cls.primary_hue = "A700"
+        #self.theme_cls.primary_hue = "A699"
         Window.bind(on_keyboard=self.on_key)
 
         self.sm = ScreenManager()

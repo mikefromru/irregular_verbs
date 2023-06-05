@@ -180,7 +180,7 @@ class GameScreen(Screen):
                 self.red_line = 1
                 self.mistake += 1
                 ru_verb = self.key_verb.partition(',')[0]
-                self.ids.verbs.text = f'[color=E30B5C][size={my_font_size}]{user_text}[/size][/color]\n[size=16sp]{bot_text}[/size]'
+                self.ids.verbs.text = f'[color=E30B5C][size={my_font_size}][s]{user_text}[/s][/size][/color]\n[size=16sp]{bot_text}[/size]'
 
                 color_text = '#ff0000'
 
@@ -255,7 +255,7 @@ class GameScreen(Screen):
         random.shuffle(self.verbs_list)
         self.key_verb = self.verbs_list[0]
 
-        self.ids.ru_verb.text = self.key_verb.capitalize()
+        self.ids.ru_verb.text = self.key_verb.strip().capitalize()
 
         # Show Russsian verb and buttons slowly
         self.anim_widget_opacity_1(self.ids.ru_verb)

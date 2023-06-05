@@ -111,29 +111,45 @@
                         size_hint_y: None
                         size: self.texture_size
 
+#MDRectangleFlatIconButton:
+#                    icon: 'robot'
+#                    text: 'Наш телеграм бот'
+                    #md_bg_color: app.theme_cls.primary_color
+#                    font_name: 'OpenSans'
+#                    pos_hint: {'center_x': .5}
+
+
         # ####### FOOTER ######## 
         MDBoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
+            height: '50dp'
             padding: [dp(15), dp(0), dp(0), dp(0)]
 
             MDLabel:
-                text: 'Написать нам'
+                text: 'Написать нам\nТелеграм бот'
                 font_name: 'OpenSans'
                 font_size: '15sp'
                 halign: 'left'
 
             MDIconButton:
+                icon: 'i/soc_network/chat_bot.png'
+                icon_size: dp(50)
+                pos_hint: {'center_y': .5}
+                on_release: root.get_link('telegram_bot')
+
+
+            MDIconButton:
                 icon: 'i/soc_network/whatsapp96.png'
                 icon_size: dp(50)
                 pos_hint: {'center_y': .5}
-                on_release: root.get_whatsapp()
+                on_release: root.get_link('whatsapp_link')
 
             MDIconButton:
                 icon: 'i/soc_network/telegram96.png'
                 icon_size: dp(45)
                 pos_hint: {'center_y': .5}
-                on_release: root.get_telegram()
+                on_release: root.get_link('telegram_link')
 
         MDBoxLayout:
             orientation: 'horizontal'
@@ -184,4 +200,4 @@
                     font_name: 'OpenSans'
                     font_size: '14sp'
                     markup: True
-                    on_release: root.get_privacy_police()
+                    on_release: root.get_link('privacy_police')
