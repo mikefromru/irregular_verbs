@@ -9,9 +9,7 @@
 
 <p float=left>
 <img style="padding: 10px" src=https://play-lh.googleusercontent.com/ngwBBw7595cctLXZUTqMF0Sy7W8W51xkgqNacSHQUmsbsH_WPEwwojS1Z-wRp8ip_BE=w2560-h1440-rw width='200'>
-
 <img style="padding: 10px;" src=https://play-lh.googleusercontent.com/zDhljBYNXTcORiZ7OEOmtdlEAuta8HhFm0UWu6BPDgdFylhj6B-27whBmHQwUtgkSNY=w2560-h1440-rw width='200'>
-
 <img style="padding: 10px" src=https://play-lh.googleusercontent.com/cno-FrpY0OGMaq6wzrFAUS6XCcfvOEAQkv-TDIwPYwpoNEFR8WAexFWTrjodueEmVzLc=w2560-h1440-rw width='200'>
 </p>
 
