@@ -33,7 +33,7 @@ from screens.table.table import TableScreen
 from screens.finish.finish import FinishScreen
 from screens.faq.faq import FaqScreen
 
-__version__ = '1.2'
+__version__ = '1.3'
 
 if platform != 'android':
     Window.size = (350, 750)
@@ -87,7 +87,6 @@ class MainApp(MDApp):
 
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Green"
-        #self.theme_cls.primary_hue = "A699"
         Window.bind(on_keyboard=self.on_key)
 
         self.sm = ScreenManager()

@@ -6,9 +6,14 @@
 
         MDBoxLayout:
             size_hint_y: None
-            radius: (dp(0),dp(0),dp(20),dp(20))
             line_color: app.theme_cls.primary_color
             height: dp(70)
+
+            MDIconButton:
+                icon: 'arrow-left'
+                pos_hint: {'center_y': .5}
+                on_release:
+                    root.manager.current = 'menu_screen'
             
             MDLabel:
                 text: 'О приложении'
@@ -16,6 +21,9 @@
                 font_name: 'OpenSans'
                 font_size: '20sp'
                 bold: True
+            
+            Widget:
+                size_hint_x: .2
 
         # ########## DESCRIPTION ##########       
         ScrollView:
