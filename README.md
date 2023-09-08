@@ -6,21 +6,14 @@
 <img src=https://play-lh.googleusercontent.com/fFTvtLskZb3Q_3f12haPyMVSUVhgv8ONUvSo5yEhIXEKAgQb4zqDK7t5yOr9B8NuN8E=w240-h480-rw width='200'>
 </center>
 
-<div style="justify-content: center; padding: 10px; display: flex; padding=: 10px">
 
-<div>
+<p float=left>
 <img style="padding: 10px" src=https://play-lh.googleusercontent.com/ngwBBw7595cctLXZUTqMF0Sy7W8W51xkgqNacSHQUmsbsH_WPEwwojS1Z-wRp8ip_BE=w2560-h1440-rw width='200'>
-</div>
 
-<div>
 <img style="padding: 10px;" src=https://play-lh.googleusercontent.com/zDhljBYNXTcORiZ7OEOmtdlEAuta8HhFm0UWu6BPDgdFylhj6B-27whBmHQwUtgkSNY=w2560-h1440-rw width='200'>
-</div>
 
-<div>
 <img style="padding: 10px" src=https://play-lh.googleusercontent.com/cno-FrpY0OGMaq6wzrFAUS6XCcfvOEAQkv-TDIwPYwpoNEFR8WAexFWTrjodueEmVzLc=w2560-h1440-rw width='200'>
-</div>
-
-</div>
+</p>
 
 ### Технологии
 - Django
