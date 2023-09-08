@@ -5,3 +5,4 @@
 - Django REST Framework
 - Kivy
 - KivyMD
+![Иллюстрация к проекту](https://play-lh.googleusercontent.com/ngwBBw7595cctLXZUTqMF0Sy7W8W51xkgqNacSHQUmsbsH_WPEwwojS1Z-wRp8ip_BE=w2560-h1440-rw)
