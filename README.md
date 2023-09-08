@@ -1,11 +1,6 @@
 # Irregular verbs
 Приложение по изучению неправильных глаголов английского языка. В качестве бекенда используется Django Rest Framework, фронтенд написан на Python Kivy framework, также используется библиотека KivyMD которая реализует набор виджетов в стиле Google Material Design.
 
-<center>
-<img src=https://play-lh.googleusercontent.com/fFTvtLskZb3Q_3f12haPyMVSUVhgv8ONUvSo5yEhIXEKAgQb4zqDK7t5yOr9B8NuN8E=w240-h480-rw width='100'>
-</center>
-
-https://play-lh.googleusercontent.com/ngwBBw7595cctLXZUTqMF0Sy7W8W51xkgqNacSHQUmsbsH_WPEwwojS1Z-wRp8ip_BE=w2560-h1440-rw
 
 <center>
 <img src=https://play-lh.googleusercontent.com/fFTvtLskZb3Q_3f12haPyMVSUVhgv8ONUvSo5yEhIXEKAgQb4zqDK7t5yOr9B8NuN8E=w240-h480-rw width='200'>
